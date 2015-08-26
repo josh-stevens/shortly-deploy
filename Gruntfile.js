@@ -77,7 +77,12 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
-        command: ['git add .', 'git commit -m "Automated deploy"', 'git push heroku master', 'heroku open'].join('&&')
+        command: ['git add .', 'git commit -m "Automated deploy"', 'git push heroku master', 'heroku open'].join('&&'),
+        options: {
+          callback: function(err, stdout, stderr, cb) {
+            grunt.log.write(stdout);
+          }
+        }
       }
     },
   });
