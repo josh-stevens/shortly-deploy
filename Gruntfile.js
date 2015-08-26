@@ -3,13 +3,16 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
-      //your code here
+      dist: {
+        src: ['public/client/*.js'],
+        dest: 'public/dist/production.js'
+      }
     },
 
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec' //nyan, xunit, html-cov, dot, min, markdown
+          reporter: 'nyan' //nyan, xunit, html-cov, dot, min, markdown
         },
         src: ['test/**/*.js']
       }
@@ -22,12 +25,15 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      //your code here
+      build: {
+        src:'public/dist/production.js',
+        dest: 'public/dist/production.min.js'
+      }
     },
 
     jshint: {
       files: [
-        // Add filespec list here
+        'public/client/*.js'
       ],
       options: {
         force: 'true',
@@ -40,7 +46,10 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
-      //your code here
+      build: {
+        src:'public/style.css',
+        dest: 'public/dist/style.min.css'
+      }
     },
 
     watch: {
@@ -95,6 +104,8 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
   // Main grunt tasks
   ////////////////////////////////////////////////////
+
+  grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'jshint']);
 
   grunt.registerTask('test', [
     'mochaTest'
