@@ -68,13 +68,16 @@ module.exports = function(grunt) {
         tasks: ['cssmin']
       },
       server: {
-        //your code here
+        files: 'server.js',
+        tasks:
+        ['test',
+        'deploy']
       }
     },
 
     shell: {
       prodServer: {
-        //can be used to auto-deploy to Heroku/Azure.
+        command: ['git add .', 'git commit -m "Automated deploy"', 'git push heroku master', 'heroku open'].join('&&')
       }
     },
   });
@@ -105,7 +108,7 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'jshint']);
+  grunt.registerTask('default', ['build']);
 
   grunt.registerTask('test', [
     'mochaTest'
@@ -113,7 +116,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    //your code here
+    'jshint', 'concat', 'uglify', 'cssmin'
   ]);
 
   //can be used to auto-deploy.
@@ -121,6 +124,7 @@ module.exports = function(grunt) {
     //Grunt options are ways to customize tasks.  Research ways to use them.
     if(grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run(['shell']);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
